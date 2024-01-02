@@ -14,6 +14,20 @@ model = load_model(Model_Path)
 def hello_world():
     return render_template('index.html')
 
+@app.route('/set_model/<model_name>',methods=['POST','GET'])
+def set_model(model_name):
+    global Model_Path
+    # Set model path based on the button clicked
+    if model_name == 'AlexNet':
+        Model_Path = 'models/pneu_cnn_model.h5'
+    elif model_name == 'VGG':
+        Model_Path = 'models/pneu_cnn_model.h5'
+    elif model_name == 'ResNet':
+        Model_Path = 'models/pneu_cnn_model.h5'
+
+    print(f"Selected model: {model_name}. Current model path: {Model_Path}")
+    return render_template('index.html',model=model_name)
+
 @app.route('/',methods=['POST','GET'])
 def predict():
     imagefile= request.files["imagefile"]
@@ -29,6 +43,7 @@ def predict():
     if result1>=0.5:
         result2='Positive'
     classification ='%s (%.2f%%)' %(result2,result1*100)
+    print(f"Current model path: {Model_Path}")
     return render_template('index.html',prediction=classification,imagePath=image_path)
 if __name__ == '__main__':
     app.run(port=5000,debug=True)
