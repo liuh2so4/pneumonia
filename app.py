@@ -5,7 +5,6 @@ from keras.models import load_model
 import numpy as np
 # from gevent.pywsgi import WSGIServer
 
-
 app = Flask(__name__)
 Model_Path= 'models/pneu_cnn_model.h5'
 model = load_model(Model_Path)
@@ -19,11 +18,11 @@ def set_model(model_name):
     global Model_Path
     # Set model path based on the button clicked
     if model_name == 'AlexNet':
-        Model_Path = 'models/pneu_cnn_model.h5'
+        Model_Path = 'models/alexnet_model_state_dict.pth'
     elif model_name == 'VGG':
-        Model_Path = 'models/pneu_cnn_model.h5'
+        Model_Path = 'models/vgg16_model_state_dict.pth'
     elif model_name == 'ResNet':
-        Model_Path = 'models/pneu_cnn_model.h5'
+        Model_Path = 'models/resnet_model_state_dict.pth'
 
     print(f"Selected model: {model_name}. Current model path: {Model_Path}")
     return render_template('index.html',model=model_name)
