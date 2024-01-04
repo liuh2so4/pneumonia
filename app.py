@@ -79,18 +79,22 @@ def predict():
     img_tensor = preprocess(img)
     img_tensor = img_tensor.unsqueeze(0)
 
+    model_name = ""
     if 'alexnet' in Model_Path:
         AlexNet.eval()
         with torch.no_grad():
             output = AlexNet(img_tensor)
+        model_name = "AlexNet"
     elif 'vgg16' in Model_Path:
         VGG.eval()
         with torch.no_grad():
             output = VGG(img_tensor)
+        model_name = "VGG16"
     elif 'resnet' in Model_Path:
         ResNet.eval()
         with torch.no_grad():
             output = ResNet(img_tensor)
+        model_name = "ResNet"
 
     probabilities = torch.softmax(output, dim=1)
     predicted_class = torch.argmax(probabilities, dim=1).item()
@@ -103,7 +107,7 @@ def predict():
     print(f"Current model path: {Model_Path}")
     print(probabilities)
 
-    return render_template('index.html',prediction=classification, imagePath=image_path)
+    return render_template('index.html', prediction=classification, imagePath=image_path, model_used=model_name)
 
 if __name__ == '__main__':
     app.run(port=5000,debug=True)
